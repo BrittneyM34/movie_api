@@ -57,6 +57,7 @@ let topTenMovies = [
     },
 ]
 
+app.use(morgan('combined', {stream: accessLogStream}));
 app.use(express.static('public'));
 
 app.get('/movies', (req, res) => {
@@ -70,4 +71,8 @@ app.get('/', (req, res) => {
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something Broke!');
+});
+
+app.listen(8080, () => {
+    console.log('The movie app has loaded and is listening on port 8080');
 });
