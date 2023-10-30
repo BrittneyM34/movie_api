@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const http = require('http');
 
+morgan = require('morgan');
+
 let topTenMovies = [
     {
         title: '17 Again',
@@ -55,10 +57,17 @@ let topTenMovies = [
     },
 ]
 
+app.use(express.static('public'));
+
 app.get('/movies', (req, res) => {
     res.json(topTenMovies);
 });
 
 app.get('/', (req, res) => {
     res.send('Welcome to my Movie Flix')
+});
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something Broke!');
 });
