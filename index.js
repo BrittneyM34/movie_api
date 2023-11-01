@@ -4,56 +4,66 @@ const http = require('http');
 
 morgan = require('morgan');
 
-let topTenMovies = [
+let movies = [
     {
         title: '17 Again',
         director: 'Burr Steers',
-        yearReleased: '2009',
+        genre: 'Comedy',
+        featured: 'Yes',
     },
     {
         title: 'Coraline',
         director: 'Henry Selick',
-        yearReleased: '2009',
+        genre: 'Animation',
+        featured: 'Yes',
     },
     {
         title: 'Us',
         director: 'Jordan Peele',
-        yearReleased: '2019',
+        genre: 'Horror',
+        featured: 'Yes',
     },
     {
         title: 'Grown Ups',
         director: 'Dennis Dugan',
-        yearReleased: '2010',
+        genre: 'Comedy',
+        featured: 'Yes',
     },
     {
         title: 'Lilo and Stitch',
-        director: '',
-        yearReleased: '2009',
+        director: 'Chris Sanders',
+        genre: 'Animation',
+        featured: 'Yes',
     },
     {
         title: 'Free Guy',
         director: 'Shawn Levy',
-        yearReleased: '2021',
+        genre: 'Comedy',
+        featured: 'Yes',
     },
     {
         title: 'The Green Mile',
         director: 'Frank Darabont',
-        yearReleased: '1999',
+        genre: 'Drama',
+        featured: 'Yes',
     },
     {
         title: 'Lone Survivor',
         director: 'Peter Berg',
-        yearReleased: '2013',
+        genre: 'Action',
+        featured: 'Yes',
     },
     {
         title: 'The Conjuring',
         director: 'James Wan',
-        yearReleased: '2013',
+        genre: 'Horror',
+        featured: 'Yes',
     },
     {
         title: 'The Curse of La Llorona',
         director: 'Michael Chaves',
-        yearReleased: '2019',
+        genre: 'Horror',
+        featured: 'Yes',
     },
 ]
 
@@ -61,7 +71,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
 app.use(express.static('public'));
 
 app.get('/movies', (req, res) => {
-    res.json(topTenMovies);
+    res.json(movies);
 });
 
 app.get('/', (req, res) => {
@@ -76,3 +86,30 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
     console.log('The movie app has loaded and is listening on port 8080');
 });
+
+//Return a list of all movies
+app.get('/movies', (req, res) => {
+    movies.find()
+    .then((movies) => {
+        res.status(200).json(movies);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+    });
+});
+
+//Return data about a single movie by title
+app.get('/movies:/Title', (req, res) =>{
+    movies.findOne({Title: req.params.Title})
+    .then((movie) => {
+        resstatues(200).json(movie);
+    })
+    .catch((err) => {
+        console.error(err);
+        res.statusMessage(500).send('Error ' + err);
+    });
+});
+
+//Return data about a genre description by name
+
