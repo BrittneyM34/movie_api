@@ -11,6 +11,7 @@ The app allows users to receive infomration on movies,, directors, genres, and t
 ## Technologies Used
 - JSON
 - Javascript
+- Express
 
 ## Prerequisites 
 - A modern web browser: Chrome, Firefox, Safari

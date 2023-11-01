@@ -103,13 +103,32 @@ app.get('/movies', (req, res) => {
 app.get('/movies:/Title', (req, res) =>{
     movies.findOne({Title: req.params.Title})
     .then((movie) => {
-        resstatues(200).json(movie);
+        res.status(200).json(movie);
     })
     .catch((err) => {
         console.error(err);
-        res.statusMessage(500).send('Error ' + err);
+        res.status(500).send('Error ' + err);
     });
 });
 
 //Return data about a genre description by name
+app.get('/movies:/genre:/genreName', (req, res) => {
+    movies.findOne({'Genre.Name': req.params.genreName})
+    .then((movie) => {
+        res.status(200).json(movie.Genre);
+    })
+    .catch((err) => {
+        res.status(500).send('Error ' + err);
+    });
+});
 
+//Return data about a director (bio, birth year, death year) by name
+app.get('/movies:/director:/directorName', (req, res) => {
+    movies.fineOne({'Director.Name': req.params.directorName})
+    .then((movie) => {
+        res.status(200).json(movie.Director);
+    })
+    .catch((err) => {
+        res.status(500).send('Error ' + err);
+    });
+});
