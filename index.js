@@ -1,6 +1,7 @@
 const express = require("express");
-const app = express();
-const http = require('http');
+    app = express();
+    http = require('http');
+    uuid = require('uuid');
 
 morgan = require('morgan');
 
@@ -71,7 +72,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
 app.use(express.static('public'));
 
 app.get('/movies', (req, res) => {
-    res.json(movies);
+    res.statues(200).json(movies);
 });
 
 app.get('/', (req, res) => {
@@ -132,3 +133,121 @@ app.get('/movies:/director:/directorName', (req, res) => {
         res.status(500).send('Error ' + err);
     });
 });
+
+//Allow new users to register
+app.post('/users', [
+    check('Username', 'Username is required').isLength({min:6}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail(),
+],  (req, res) => {
+    let errors = validationResults(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
+    }
+
+    let hashedPassword = Users.hashPasswortd(req.body.Password);
+
+    Users.findOne({ Username: req.body.Username })
+    .then((user) => {
+        if (user) {
+            return res.status(400).send(req.body.Username + ' already exists');
+        } else {
+            User 
+            .create({
+                Username: req.body.Username,
+                Password: hashedPassword,
+                Email: req.body.Email,
+                Birthday: req.body.Birthday,
+            })
+            .then((user) =>{res.status(201).json(user)})
+            .catch((error) => {
+                console.error(error);
+                res.status(500).send('Error: ' + error);
+            })
+        }
+    })
+    .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+    });
+});
+
+//Allow users to update their user info (username, password, email, date of birth)
+app.put('/users/:Username', (req, res) => {
+    if (req.user.Username !== req.params.Username){
+        return res.status(400).send('Permission denied');
+    }
+
+    let data = {
+        Username: req.body.Username,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+    }
+    if (req.body.Password){
+        let hashedPassword = Users.hashPassword(req.body.Password);
+        data['Password']= hashedPassword;
+    }
+
+    Users.findOneAndUpdate({Username: req.paramsUsername},
+       {$set: data},
+       {new: true})
+       .then(updatedUser => {
+        res.json(updatedUser);
+       })
+       .catch(err => {
+        console.log(err);
+        res.status(500).send('Error ' + err);
+       });
+});
+
+//Allow users to add a movie to their list of favorites
+app.put('/users/:Username/movies/:MovieID', (req, res) => {
+    Users.findOneAndUpdate(
+        {Username: req.params.Username},
+        {$push: {favoriteMovies: req.params.MovieID}},
+        {new:true},
+    )
+    .then(updatedUser => {
+        res.json(updatedUser);
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).send('Error ' + err);
+    });
+});
+
+//Allow users to remove a movie from their list of favorites
+app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+    Users.findOneAndUpdate(
+        {Username: req.params.Username},
+        {$pull: {favoriteMovies: req.params.MovieID}},
+        {new:true},
+    )
+    .then(updatedUser => {
+        res.json(updatedUser);
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).send('Error ' + err);
+    });
+});
+
+//Allow existing users to deregister
+app.delete('/users/:Username', (req, res) => {
+    Users.findOneAndRemove({ Username: req.params.Username})
+    .then((user) => {
+        if (!user) {
+            res.status(400).send(req.params.Username + ' was not found');
+        } else {
+            res.status(200).send(req.params.Username + ' was deleted');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        res.status(500).send('Error ' + err);
+    });
+});
+
+app.listen(8080, () => console.log ("listening on 8080"))
