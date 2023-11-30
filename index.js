@@ -167,28 +167,33 @@ app.get('/movies', (req, res) => {
     });
 
 //Allow users to update their user info (username, password, email, date of birth)
-app.put('/users/:id', (req, res) => {
-    const { id } = req.params;
-    const updatedUser = req.body
+    app.put('/users/:id', (req, res) => {
+        const { id } = req.params;
+        const updatedUser = req.body
 
-    let user = users.find( user => user.id == id);
-});
+        let user = users.find( user => user.id == id);
+
+        if (user) {
+            user.name = updatedUser.name;
+            res.status(200).json(user);
+        } else {
+            res.status(400).send('No such user')
+        }
+    });
 
 //Allow users to add a movie to their list of favorites
-app.put('/users/:Username/movies/:MovieID', (req, res) => {
-    Users.findOneAndUpdate(
-        {Username: req.params.Username},
-        {$push: {favoriteMovies: req.params.MovieID}},
-        {new:true},
-    )
-    .then(updatedUser => {
-        res.json(updatedUser);
-    })
-    .catch(err => {
-        console.error(err);
-        res.status(500).send('Error ' + err);
+    app.post('/users/:id/:movieTitle', (req, res) => {
+        const { id, movieTitle } = req.params;
+
+        let user = users.find( user => user.id == id);
+
+        if (user) {
+            user.favoriteMovies.push(movieTitle);
+            res.status(200).json(user);
+        } else {
+            res.status(400).send('No such user')
+        }
     });
-});
 
 //Allow users to remove a movie from their list of favorites
 app.delete('/users/:Username/movies/:MovieID', (req, res) => {
@@ -297,4 +302,20 @@ app.delete('/users/:Username', (req, res) => {
 //         console.log(err);
 //         res.status(500).send('Error ' + err);
 //        });
+// });
+
+// //Allow users to add a movie to their list of favorites
+// app.put('/users/:Username/movies/:MovieID', (req, res) => {
+//     Users.findOneAndUpdate(
+//         {Username: req.params.Username},
+//         {$push: {favoriteMovies: req.params.MovieID}},
+//         {new:true},
+//     )
+//     .then(updatedUser => {
+//         res.json(updatedUser);
+//     })
+//     .catch(err => {
+//         console.error(err);
+//         res.status(500).send('Error ' + err);
+//     });
 // });
