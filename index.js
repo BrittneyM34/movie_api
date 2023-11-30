@@ -189,43 +189,41 @@ app.get('/movies', (req, res) => {
 
         if (user) {
             user.favoriteMovies.push(movieTitle);
-            res.status(200).json(user);
+            res.status(200).send('${movieTitle} has been added to the user ${id} array');
         } else {
             res.status(400).send('No such user')
         }
     });
 
 //Allow users to remove a movie from their list of favorites
-app.delete('/users/:Username/movies/:MovieID', (req, res) => {
-    Users.findOneAndUpdate(
-        {Username: req.params.Username},
-        {$pull: {favoriteMovies: req.params.MovieID}},
-        {new:true},
-    )
-    .then(updatedUser => {
-        res.json(updatedUser);
-    })
-    .catch(err => {
-        console.error(err);
-        res.status(500).send('Error ' + err);
+
+    app.delete('/users/:id/:movieTitle', (req, res) => {
+        const { id, movieTitle } = req.params;
+
+        let user = users.find( user => user.id == id);
+
+        if (user) {
+            user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieTitle);
+            res.status(200).send('${movieTitle.;} has been deleted from the user ${id} array');
+        } else {
+            res.status(400).send('No such user')
+        }
     });
-});
 
 //Allow existing users to deregister
-app.delete('/users/:Username', (req, res) => {
-    Users.findOneAndRemove({ Username: req.params.Username})
-    .then((user) => {
-        if (!user) {
-            res.status(400).send(req.params.Username + ' was not found');
+
+    app.delete('/users/:id/:movieTitle', (req, res) => {
+        const { id, movieTitle } = req.params;
+
+        let user = users.find( user => user.id == id);
+
+        if (user) {
+            user.favoriteMovies = user.favoriteMovies.filter( title => title !== movieTitle);
+            res.status(200).send('${movieTitle.;} has been deleted from the user ${id} array');
         } else {
-            res.status(200).send(req.params.Username + ' was deleted');
+            res.status(400).send('No such user')
         }
-    })
-    .catch(err => {
-        console.error(err);
-        res.status(500).send('Error ' + err);
     });
-});    
 
 
 // //Return data about a single movie by title
@@ -319,3 +317,36 @@ app.delete('/users/:Username', (req, res) => {
 //         res.status(500).send('Error ' + err);
 //     });
 // });
+
+
+// //Allow users to remove a movie from their list of favorites
+// app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+//     Users.findOneAndUpdate(
+//         {Username: req.params.Username},
+//         {$pull: {favoriteMovies: req.params.MovieID}},
+//         {new:true},
+//     )
+//     .then(updatedUser => {
+//         res.json(updatedUser);
+//     })
+//     .catch(err => {
+//         console.error(err);
+//         res.status(500).send('Error ' + err);
+//     });
+// });
+
+// //Allow existing users to deregister
+// app.delete('/users/:Username', (req, res) => {
+//     Users.findOneAndRemove({ Username: req.params.Username})
+//     .then((user) => {
+//         if (!user) {
+//             res.status(400).send(req.params.Username + ' was not found');
+//         } else {
+//             res.status(200).send(req.params.Username + ' was deleted');
+//         }
+//     })
+//     .catch(err => {
+//         console.error(err);
+//         res.status(500).send('Error ' + err);
+//     });
+// });    
