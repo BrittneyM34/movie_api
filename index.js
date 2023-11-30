@@ -5,6 +5,8 @@ const express = require("express");
 
 morgan = require('morgan');
 
+var bodyParser = require('body-parser');
+
 let users = [
    {
     id:1,
@@ -23,7 +25,7 @@ let movies = [
         "title": '17 Again',
         "director": {
             "Name": 'Burr Steers',
-            "Description": "Burr Gore Steers is an American actor, screenwriter, and director. His films include Igby Goes Down and 17 Again.",
+            "Bio": "Burr Gore Steers is an American actor, screenwriter, and director. His films include Igby Goes Down and 17 Again.",
         },
         "genre":  {
             "Name": 'Comedy',
@@ -89,6 +91,8 @@ let movies = [
 
 app.use(express.static('public'));
 
+app.use(bodyParser.json());
+
 app.get('/movies', (req, res) => {
     res.status(200).
      json(movies);
@@ -137,7 +141,7 @@ app.get('/movies', (req, res) => {
     });
 
 //Return data about a director (bio, birth year, death year) by name
-    app.get('/movies/:director/:directorName', (req, res) => {
+    app.get('/movies/:directors/:directorName', (req, res) => {
         const { directorName }= req.params;
         const director = movies.find( movie => movie.director.Name === directorName ).director;
 
@@ -149,45 +153,25 @@ app.get('/movies', (req, res) => {
     });
 
 //Allow new users to register
-app.post('/users', (req, res) => {
-    let newUser = req.body;
-  
-    if (!newUser.name) {
-      const message = 'Missing "name" in request body';
-      res.status(400).send(message);
-    } else {
-      newUser.id = uuid.v4();
-      users.push(newUser);
-      res.status(201).send(newUser);
-    }
-  });
+    app.post('/users', (req, res) => {
+        const newUser = req.body;
+
+        if (newUser.name) {
+            newUser.id = uuid.v4();
+            users.push(newUser);
+
+            res.status(201).json(newUser)
+        } else {
+            res.status(400).send*('Users need names')
+        }
+    });
 
 //Allow users to update their user info (username, password, email, date of birth)
-app.put('/users/:Username', (req, res) => {
-    if (req.user.Username !== req.params.Username){
-        return res.status(400).send('Permission denied');
-    }
+app.put('/users/:id', (req, res) => {
+    const { id } = req.params;
+    const updatedUser = req.body
 
-    let data = {
-        Username: req.body.Username,
-        Email: req.body.Email,
-        Birthday: req.body.Birthday,
-    }
-    if (req.body.Password){
-        let hashedPassword = Users.hashPassword(req.body.Password);
-        data['Password']= hashedPassword;
-    }
-
-    Users.findOneAndUpdate({Username: req.paramsUsername},
-       {$set: data},
-       {new: true})
-       .then(updatedUser => {
-        res.json(updatedUser);
-       })
-       .catch(err => {
-        console.log(err);
-        res.status(500).send('Error ' + err);
-       });
+    let user = users.find( user => user.id == id);
 });
 
 //Allow users to add a movie to their list of favorites
@@ -286,3 +270,31 @@ app.delete('/users/:Username', (req, res) => {
 //       res.status(201).send(newUser);
 //     }
 //   });
+
+// //Allow users to update their user info (username, password, email, date of birth)
+// app.put('/users/:Username', (req, res) => {
+//     if (req.user.Username !== req.params.Username){
+//         return res.status(400).send('Permission denied');
+//     }
+
+//     let data = {
+//         Username: req.body.Username,
+//         Email: req.body.Email,
+//         Birthday: req.body.Birthday,
+//     }
+//     if (req.body.Password){
+//         let hashedPassword = Users.hashPassword(req.body.Password);
+//         data['Password']= hashedPassword;
+//     }
+
+//     Users.findOneAndUpdate({Username: req.paramsUsername},
+//        {$set: data},
+//        {new: true})
+//        .then(updatedUser => {
+//         res.json(updatedUser);
+//        })
+//        .catch(err => {
+//         console.log(err);
+//         res.status(500).send('Error ' + err);
+//        });
+// });
