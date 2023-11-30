@@ -122,6 +122,7 @@ app.get('/movies', (req, res) => {
         res.status(500).send('Error: ' + err);
     });
 });
+
 //Return data about a single movie by title
     app.get('/movies/:title', (req, res) => {
         res.json(movies.find((movie) =>
