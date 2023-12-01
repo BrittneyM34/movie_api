@@ -6,7 +6,129 @@
         <title>My Flix</title>
     </head>
     <body>
-        <h1>My Top 10 Movies</h1>
-        <p>These are my top ten favorite movies.</p>
+            <h1>My Top 10 Movies</h1>
+            <p>These are my top ten favorite movies.</p>
+
+        <tbody>
+            <tr>
+                <td>Return a list of ALL movies to the user</td>
+                <td>/movies</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object hoding data about all movies</td>
+            </tr>
+            <tr>
+                <td>Return data about a single movie by title to the user</td>
+                <td>/movies/[title]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object hoding data about a signle movie, contatining title, genre, director, and featured. Example:
+                    <code>
+                        {
+                        "title": "Lilo and Stitch",
+                        "director": "Chris Sanders",
+                        "genre": "Animation",
+                        "featured": "Yes"
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr>
+                <td>Return data about a genre by name</td>
+                <td>/movies/genre/[genreName]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about a single genre, containing genre name, description. Example:
+                    <code>
+                        {
+                            "Name": "Comedy",
+                            "Description": "Comedy is a genre of film in which the main emphasis is on humor. These films are designed to make the audience laugh through amusement and most often work by exaggerating characteristics for humorous effect."
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr>
+                <td>Returnd data about a director by name</td>
+                <td>/movies/directors/[directorName]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about a single director, containing director name and bio. Example:
+                    <code>
+                        {
+                            "Name": 'Burr Steers',
+                            "Bio": "Burr Gore Steers is an American actor, screenwriter, and director. His films include Igby Goes Down and 17 Again.",
+                        },
+                    </code>
+                </td>
+            </tr>
+            <tr>
+                <td>Allow new users to register</td>
+                <td>/users</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>A JSON object holding data about the user to add. Example:
+                    <code>
+                        {
+                            "name": "Mary",
+                            "favoriteMovies": [],
+                            "id": "f0ebd262-14d4-4d10-98ae-bfed6bad3734"
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr>
+                <td>Allow users to update their user information</td>
+                <td>/users/[Username]</td>
+                <td>PUT</td>
+                <td>A JSON object holding data about the user which needs to be updated, structured like:
+                    <code>
+                        {
+                            "id": 1,
+                            "name": "Kim Updated Name",
+                            "favoriteMovies": []
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr>
+                <td>Allow users to add a movie to their list of favorites</td>
+                <td>/users/[Username]/movies/[movieName]</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>A JOSN object holding data about the updated user information. Example:
+                    <code>
+                        {
+                            "id": 1,
+                            "name": "Kim",
+                            "favoriteMovies": [
+                                "Lilo and Stitch"
+                            ]
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr>
+                <td>Allow users to remove a movie from their list of favorites</td>
+                <td>/users/[Username]/movies/[movieName]</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>A JSON object holding data about the updated user information. Example:
+                    <code>
+                        {
+                            "id": 1,
+                            "name": "Kim",
+                            "favoriteMovies": []
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr>
+                <td>Allow existing users to deregister</td>
+                <td>/users/[Username]</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>Text message indicating whether the user deregister successfully.</td>
+            </tr>
+        </tbody>
     </body>
 </html>
