@@ -248,16 +248,16 @@ app.get('/movies', (req, res) => {
     });
 
 //Return data about a genre description by name
-    app.get('/movies/genre/:genreName', (req, res) => {
-        const { genreName }= req.params;
-        const genre = movies.find( movie => movie.genre.Name === genreName ).genre;
-
-        if (genre) {
-            res.status(200).json(genre);
-        } else {
-            res.status(400).send('No such genre')
-        }
-    });
+    app.get('/genre/:name', (req, res) => {
+        Genres.findOne({ name: req.params.name })
+        .then((genre) => {
+            res.json(genre.description);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send("Error: " + err);
+        })
+    });;
 
 //Return data about a director (bio, birth year, death year) by name
     app.get('/movies/directors/:directorName', (req, res) => {
