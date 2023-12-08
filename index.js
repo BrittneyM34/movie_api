@@ -4,9 +4,7 @@ const express = require("express");
     mongoose = require('mongoose');
     Models = require('./models.js');
 
-    movies - Models.Movie;
-    users = Models.User;
-
+var bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -17,6 +15,9 @@ mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useU
 morgan = require('morgan');
 
 var bodyParser = require('body-parser');
+
+const Movies = Models.Movie;
+const Users = Models.User;
 
 let users = [
    {
