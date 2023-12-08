@@ -10,17 +10,13 @@ const express = require("express");
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 morgan = require('morgan');
 
 var bodyParser = require('body-parser');
-
-app.use(express.static('public'));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 let users = [
    {
@@ -269,17 +265,30 @@ app.get('/movies', (req, res) => {
     });
 
 //Allow new users to register
-    app.post('/users', (req, res) => {
-        const newUser = req.body;
-
-        if (newUser.name) {
-            newUser.id = uuid.v4();
-            users.push(newUser);
-
-            res.status(201).json(newUser)
-        } else {
-            res.status(400).send*('Users need names')
-        }
+    app.post('/users', async (req, res) => {
+        await users.findOne({ Username: req.bodyUsername })
+        .then((user) => {
+            if (user) {
+                return res.status(400).send(req.body.Username + 'already exists');
+            } else {
+                users
+                    .create({
+                        Username: req.body.Username,
+                        Password: req.body.Password,
+                        Email: req.body.Email,
+                        Birthday: req.body.Birthday
+                    })
+                    .then((user) => {res.status(201).json(user) })
+                .cath((error) => {
+                    console.error(error);
+                    res.status(500).send('Error: ' + error);
+                })
+            }
+        })
+        .cath((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+        });
     });
 
 //Allow users to update their user info (username, password, email, date of birth)
@@ -375,20 +384,6 @@ app.get('/movies', (req, res) => {
 //         res.status(500).send('Error ' + err);
 //     });
 // });
-
-// //Allow new users to register
-// app.post('/users', (req, res) => {
-//     let newUser = req.body;
-  
-//     if (!newUser.name) {
-//       const message = 'Missing "name" in request body';
-//       res.status(400).send(message);
-//     } else {
-//       newUser.id = uuid.v4();
-//       users.push(newUser);
-//       res.status(201).send(newUser);
-//     }
-//   });
 
 // //Allow users to update their user info (username, password, email, date of birth)
 // app.put('/users/:Username', (req, res) => {
