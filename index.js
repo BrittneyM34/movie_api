@@ -337,9 +337,34 @@ app.get('/movies', (req, res) => {
     });
 
 //Ad a movie to a user's list of favorites
-    app.post('/users/:Username/movies/:MovieID', (req, res) => {
-        
+    app.post('/users/:Username/movies/:MovieID', async (req, res) => {
+        await Users.findOneAndUpdate({ Username: req.params.Username}, {
+            $push: { favoriteMovies: req.params.MovieID }
+        },
+        { new: true}) //This line makes sure that the updated document is returned
+        .then((updatedUser) => {
+            res.json(updatedUser);
+        })
+        .cathc((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+    });;
+//Delete a user by username
+app.delete('/users/:Username', async (req, res) => {
+    await Users.findOneAndUpdate({ Username: req.params.Username })
+    .then((user) {
+        if (!user) {
+        res.status(400).send(req.params.Username + ' was not found ');
+        } else { 
+            res.status(200).send(req.params.Username + ' was deleted.');
+        }
+    })
+    .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
     });
+});
 
 //Allow users to remove a movie from their list of favorites
 
