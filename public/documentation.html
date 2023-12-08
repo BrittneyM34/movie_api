@@ -48,7 +48,7 @@
                 </td>
             </tr>
             <tr>
-                <td>Returnd data about a director by name</td>
+                <td>Returns data about a director by name</td>
                 <td>/movies/directors/[directorName]</td>
                 <td>GET</td>
                 <td>None</td>
@@ -62,6 +62,40 @@
                 </td>
             </tr>
             <tr>
+                <td>Return all users</td>
+                <td>/users</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about all users Example:
+                    <code>
+                        {
+                            "name": "Mary",
+                            "email": "mary541@gmail.com"
+                            "birthday": "1975-04-23"
+                            "favoriteMovies": [],
+                            "id": "f0ebd262-14d4-4d10-98ae-bfed6bad3734"
+                        }
+                    </code>
+                </td>
+            </tr>
+            <tr>
+                <tr>
+                    <td>Get a user by username</td>
+                    <td>/users</td>
+                    <td>POST</td>
+                    <td>None</td>
+                    <td>A JSON object holding data about the user. Example:
+                        <code>
+                            {
+                                "name": "Mary",
+                                "email": "mary541@gmail.com"
+                                "birthday": "1975-04-23"
+                                "favoriteMovies": [],
+                                "id": "f0ebd262-14d4-4d10-98ae-bfed6bad3734"
+                            }
+                        </code>
+                    </td>
+                </tr>
                 <td>Allow new users to register</td>
                 <td>/users</td>
                 <td>POST</td>
@@ -70,6 +104,8 @@
                     <code>
                         {
                             "name": "Mary",
+                            "email": "mary541@gmail.com"
+                            "birthday": "1975-04-23"
                             "favoriteMovies": [],
                             "id": "f0ebd262-14d4-4d10-98ae-bfed6bad3734"
                         }

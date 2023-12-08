@@ -388,19 +388,3 @@ app.delete('/users/:Username/movies.MovieID', (req, res) => {
         res.status(500).send('Error: ' + err);
     });
 });
-
-//Allow existing users to deregister
-    app.delete('/users/:username', (req, res) => {
-        Users.findOneAndRemove({ Username: req.params.Username})
-        .then((user) => {
-            if (!user) {
-                rmSync.status(400).send(req.params.Username + ' was not found');
-            } else { 
-                res.status(200).send(req.params.Username + ' was deleted');
-            }
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        });
-    });
