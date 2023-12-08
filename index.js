@@ -237,8 +237,14 @@ app.get('/movies', (req, res) => {
 
 //Return data about a single movie by title
     app.get('/movies/:title', (req, res) => {
-        res.json(movies.find((movie) =>
-            { return movie.title === req.params.title }));
+        Movies.findOne({ title: req.params.title })
+            .then((movie) => {
+                res.json(movie);
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
     });
 
 //Return data about a genre description by name
