@@ -2,7 +2,7 @@ const express = require("express");
     http = require('http');
     uuid = require('uuid');
     mongoose = require('mongoose');
-    Models = require('./js/models.js');
+    Models = require('./models.js');
 
 var bodyParser = require('body-parser');
 const app = express();
@@ -11,10 +11,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-let auth = require('./js/auth.js')(app);
+let auth = require('./auth.js')(app);
 
 const passport = require('passport');
-require('./js/passport.js');
+require('./passport.js');
 
 mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
