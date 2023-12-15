@@ -286,7 +286,6 @@ app.get('/movies/:title', (req, res) => {
     });
 });
 
-
 // //Return data about a genre description by name
 //     app.get('/genre/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
 //         Genres.findOne({ name: req.params.name })
@@ -439,10 +438,10 @@ app.get('/director/:name', (req, res) => {
             .then ((users) => {
                 res.json(user);
             })
-            .catch ((err) => {
-                console.error(err);
-                res.status(500).send('Error: ' + err);
-            });
+        .catch ((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
     });
 
 // //Update a user's info by username
