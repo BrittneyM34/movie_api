@@ -392,7 +392,7 @@ app.get('/director/:name', (req, res) => {
                 })
             }
         })
-        .cath((error) => {
+        .catch((error) => {
             console.error(error);
             res.status(500).send('Error: ' + error);
         });
@@ -554,7 +554,7 @@ app.delete('/users/:username', (req, res) => {
     Users.findOneAndRemove({ Username: req.params.Username})
     .then((user) => {
         if (!user) {
-            rmSync.status(400).send(req.params.Username + ' was not found');
+            res.status(400).send(req.params.Username + ' was not found');
         } else { 
             res.status(200).send(req.params.Username + ' was deleted');
         }
