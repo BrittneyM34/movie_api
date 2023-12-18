@@ -44,25 +44,29 @@ let users = [
     name:"Kim Davidson",
     email: "davidson19@gmail.com",
     birthday: ("1974-06-27"),
-    favoriteMovies:""
+    favoriteMovies:"",
+    username: "davidson123"
    },
    {
     name:"Joe Smith",
     email: "smith37@gmail.com",
     birthday: ("1985-04-23"),
-    favoriteMovies:""
+    favoriteMovies:"",
+    username:"smith21"
    },
    {
     name:"Jane Doe",
     email: "doe65@gmail.com",
     birthday: ("1954-07-02"),
-    favoriteMovies:""
+    favoriteMovies:"",
+    username:"doe54"
    },
    {
     name:"Bob Johnson",
     email: "johnson43@gmail.com",
     birthday: ("1954-06-06"),
-    favoriteMovies:""
+    favoriteMovies:"",
+    username: "johnson35"
    },
    {
     name:"Amy Hill",
@@ -250,16 +254,16 @@ app.listen(8080, () => {
 //     });
 // });
 
-app.get('/movies', async (req, res) => {
-    await movies.find()
-    .then((movies) => {
-        res.status(200).json(movies);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
+    app.get('/movies', async (req, res) => {
+        await movies.find()
+        .then((movies) => {
+            res.status(200).json(movies);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
     });
-});
 
 //Return data about a single movie by title
     // app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -273,16 +277,16 @@ app.get('/movies', async (req, res) => {
     //         });
     // });
 
-app.get('/movies/:title', (req, res) => {
-    movies.findOne({ title: req.params.title })
-    .then((movie) => {
-        res.json(movie);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
+    app.get('/movies/:title', (req, res) => {
+        movies.findOne({ title: req.params.title })
+        .then((movie) => {
+            res.json(movie);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
     });
-});
 
 // //Return data about a genre description by name
 //     app.get('/genre/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -296,16 +300,16 @@ app.get('/movies/:title', (req, res) => {
 //         })
 //     });
 
-app.get('/genre/:name', (req, res) => {
-    genres.findOne({ name: req.params.name })
-    .then((genre) => {
-        res.json(genre.description);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-    })
-});
+    app.get('/genre/:name', (req, res) => {
+        genres.findOne({ name: req.params.name })
+        .then((genre) => {
+            res.json(genre.description);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        })
+    });
 
 // //Return data about a director (bio, birth year, death year) by name
 //     app.get('/director/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
@@ -319,16 +323,16 @@ app.get('/genre/:name', (req, res) => {
 //         });
 //     });
 
-app.get('/director/:name', (req, res) => {
-    directors.findOne({ name: req.params.name })
-    .then((director) => {
-        res.json(director);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
+    app.get('/director/:name', (req, res) => {
+        directors.findOne({ name: req.params.name })
+        .then((director) => {
+            res.json(director);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
     });
-});
 
 // //Add a new user
 //     app.post('/users', [
@@ -344,17 +348,17 @@ app.get('/director/:name', (req, res) => {
 //         }
 
 //         let hashedPassword = users.hashPassword(req.body.Password);
-//         await users.findOne({ username: req.bodyUsername })
+//         await users.findOne({ username: req.body.username })
 //         .then((user) => {
 //             if (user) {
-//                 return res.status(400).send(req.body.Username + 'already exists');
+//                 return res.status(400).send(req.body.username + 'already exists');
 //             } else {
 //                 users
 //                     .create({
-//                         username: req.body.Username,
+//                         username: req.body.username,
 //                         password: hashedPassword,
-//                         email: req.body.Email,
-//                         birthday: req.body.Birthday
+//                         email: req.body.email,
+//                         birthday: req.body.birthday
 //                     })
 //                     .then((user) => {res.status(201).json(user) })
 //                 .cacth((error) => {
@@ -370,17 +374,17 @@ app.get('/director/:name', (req, res) => {
 //     });
 
     app.post('/users', async (req, res) => {
-        await users.findOne({ username: req.bodyUsername })
+        await users.findOne({ username: req.body.username })
         .then((user) => {
             if (user) {
-                return res.status(400).send(req.body.Username + 'already exists');
+                return res.status(400).send(req.body.username + 'already exists');
             } else {
                 users
                     .create({
-                        username: req.body.Username,
-                        password: req.body.Password,
-                        email: req.body.Email,
-                        birthday: req.body.Birthday
+                        username: req.body.username,
+                        password: req.body.password,
+                        email: req.body.email,
+                        birthday: req.body.nirthday
                     })
                     .then((user) => {
                         res.status(201).json(user) })
@@ -421,7 +425,7 @@ app.get('/director/:name', (req, res) => {
 
 // //Get a user by username
 //     app.get('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-//         await users.findOne({ Username: req.params.Username })
+//         await users.findOne({ username: req.params.username })
 //             .then ((users) => {
 //                 res.json(user);
 //             })
@@ -431,8 +435,8 @@ app.get('/director/:name', (req, res) => {
 //             });
 //     });
 
-    app.get('/users/:Username', async (req, res) => {
-        await users.findOne({ Username: req.params.Username })
+    app.get('/users/:username', async (req, res) => {
+        await users.findOne({ username: req.params.username })
             .then ((users) => {
                 res.json(user);
             })
@@ -445,10 +449,10 @@ app.get('/director/:name', (req, res) => {
 // //Update a user's info by username
 //     app.put('/users/:Username', passport.authenticate('jwt', { session: false }), 
 //     [
-//         check('Username', 'Username is required').isLength({min: 5}),
-//         check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-//         check('Password', 'Password is required').not().isEmpty(),
-//         check('Email', 'Email does not appear to be valid').isEmail()
+//         check('username', 'Username is required').isLength({min: 5}),
+//         check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+//         check('password', 'Password is required').not().isEmpty(),
+//         check('email', 'Email does not appear to be valid').isEmail()
 //     ], async (req, res) => {
 //         let errors = validationResult(req);
 
@@ -456,16 +460,16 @@ app.get('/director/:name', (req, res) => {
 //             return res.status(422).json({ errors: errors.array() });
 //         }
 //         //Condition to check added here
-//         if(req.user.Username !== req.params.Username){
+//         if(req.user.username !== req.params.username){
 //             return res.status(400).send('Permisssion denied')
 //         }
 //         //Condition ends
-//         await users.findOneAndUpdate({ Username: req.params.Username }, {$set:
+//         await users.findOneAndUpdate({ username: req.params.username }, {$set:
 //         {
-//             Username: req.body.Username,
-//             Password: req.body.Password,
-//             Email: req.body.Email,
-//             Birthday: req.body.Birthday
+//             username: req.body.username,
+//             password: req.body.password,
+//             email: req.body.email,
+//             birthday: req.body.birthday
 //         }
 //         },
 //         { new: true})  //This line makes sure that the updated document is returned
@@ -478,13 +482,17 @@ app.get('/director/:name', (req, res) => {
 //         })
 //     });
 
-    app.put('/users/:Username', async (req, res) => {
-        await users.findOneAndUpdate({ Username: req.params.Username }, {$set:
+    app.put('/users/:username', async (req, res) => {
+         //Condition to check added here
+        if(req.user.username !== req.params.username){
+            return res.status(400).send('User does not exist')
+}       //Condition ends
+        await users.findOneAndUpdate({ username: req.params.username }, {$set:
         {
-            Username: req.body.Username,
-            Password: req.body.Password,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email,
+            birthday: req.body.birthday
         }
         },
         { new: true})  //This line makes sure that the updated document is returned
@@ -499,11 +507,11 @@ app.get('/director/:name', (req, res) => {
 
 
 // //Add a movie to a user's list of favorites
-//     app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
-//         if(req.user.Username !== req.params.Username){
+//     app.post('/users/:username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+//         if(req.user.username !== req.params.username){
 //             return res.status(400).send('Permission denied');
 //         }
-//         await users.findOneAndUpdate({ Username: req.params.Username}, {
+//         await users.findOneAndUpdate({ username: req.params.username}, {
 //             $push: { favoriteMovies: req.params.MovieID }
 //         },
 //         { new: true}) //This line makes sure that the updated document is returned
@@ -515,31 +523,37 @@ app.get('/director/:name', (req, res) => {
 //             res.status(500).send('Error: ' + err);
 //         });
 //     });
-app.post('/users/:Username/movies/:MovieID', async (req, res) => {
-    await users.findOneAndUpdate({ username: req.params.Username}, {
-        $push: { favoriteMovies: req.params.MovieID }
-    },
-    { new: true}) //This line makes sure that the updated document is returned
-    .then((updatedUser) => {
-        res.json(updatedUser);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
+
+    app.post('/users/:username/movies/:MovieID', async (req, res) => {
+        //Condition to check added here
+        if(req.user.username !== req.params.username){
+            return res.status(400).send('User does not exist')
+        }   
+        //Condition ends
+        await users.findOneAndUpdate({ username: req.params.username}, {
+            $push: { favoriteMovies: req.params.MovieID }
+        },
+        { new: true}) //This line makes sure that the updated document is returned
+        .then((updatedUser) => {
+            res.json(updatedUser);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
     });
-});
 
 //Delete a user by username
 // app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
-//     if(req.user.Username !== req.params.Username){
-//         return res.status(400).send('Permission denied');
+//     if(req.user.username !== req.params.username){
+//         return res.status(400).send('User does not exist');
 //     }
-//     await users.findOneAndUpdate({ Username: req.params.Username })
+//     await users.findOneAndUpdate({ username: req.params.username })
 //     .then((user) => {
 //         if (!user) {
-//         res.status(400).send(req.params.Username + ' was not found ');
+//         res.status(400).send(req.params.username + ' was not found ');
 //         } else { 
-//             res.status(200).send(req.params.Username + ' was deleted.');
+//             res.status(200).send(req.params.username + ' was deleted.');
 //         }
 //     })
 //     .catch((err) => {
@@ -548,28 +562,31 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
 //     });
 // });
 
-app.delete('/users/:username', (req, res) => {
-    users.findOneAndRemove({ Username: req.params.Username})
-    .then((user) => {
-        if (!user) {
-            res.status(400).send(req.params.Username + ' was not found');
-        } else { 
-            res.status(200).send(req.params.Username + ' was deleted');
+    app.delete('/users/:username', (req, res) => {
+        if(req.user.username !== req.params.username){
+           return res.status(400).send('User does not exist');
         }
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
+        users.findOneAndRemove({ username: req.params.username})
+        .then((user) => {
+            if (!user) {
+                res.status(400).send(req.params.username + ' was not found');
+            } else { 
+                res.status(200).send(req.params.username + ' was deleted');
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
     });
-});
 
 // //Allow users to remove a movie from their list of favorites
 // app.delete('/users/:Username/movies.MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
-//     if(req.user.Username !== req.params.Username){
+//     if(req.user.username !== req.params.username){
 //         return res.status(400).send('Permission denied');
 //     }
 //     users.findOneAndUpdate(
-//         {Username: req.params.Username},
+//         {username: req.params.username},
 //         {$pull: {favoriteMovies: req.params.MovieID}},
 //         {new:true},
 //     )
@@ -582,17 +599,17 @@ app.delete('/users/:username', (req, res) => {
 //     });
 // });
 
-app.delete('/users/:Username/movies/:MovieID', (req, res) => {
-    users.findOneAndUpdate(
-        {Username: req.params.Username},
-        {$pull: {favoriteMovies: req.params.MovieID}},
-        {new:true},
-    )
-    .then((updatedUser) => {
-        res.json(updatedUser);
-    })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
+    app.delete('/users/:username/movies/:MovieID', (req, res) => {
+        users.findOneAndUpdate(
+            {username: req.params.username},
+            {$pull: {favoriteMovies: req.params.MovieID}},
+            {new:true},
+        )
+        .then((updatedUser) => {
+            res.json(updatedUser);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
     });
-});
