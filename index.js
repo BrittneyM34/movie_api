@@ -529,7 +529,7 @@ app.listen(8080, () => {
             return res.status(400).send('User does not exist')
         }   
         //Condition ends
-        await users.findOneAndUpdate({ username: req.params.username}, {
+        await Users.findOneAndUpdate({ username: req.params.username}, {
             $push: { favoriteMovies: req.params.MovieID }
         },
         { new: true}) //This line makes sure that the updated document is returned
@@ -561,11 +561,11 @@ app.listen(8080, () => {
 //     });
 // });
 
-    app.delete('/users/:username', (req, res) => {
-        if(req.user.Username !== req.params.Username){
+    app.delete('/users/:username', async (req, res) => {
+        if(req.user.username !== req.params.username){
            return res.status(400).send('User does not exist');
         }
-        Users.findOneAndRemove({ username: req.params.username})
+        await Users.findOneAndRemove({ username: req.params.username})
         .then((user) => {
             if (!user) {
                 res.status(400).send(req.params.username + ' was not found');
