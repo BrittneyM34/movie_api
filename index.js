@@ -14,10 +14,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 let auth = require('./auth.js')(app);
 
-const passport = require('passport');
-require('./passport.js');
+// const passport = require('passport');
+// require('./passport.js');
 
-const { check, validationResult } = require('express-validator');
+// const { check, validationResult } = require('express-validator');
 
 mongoose.connect('mongodb://127.0.0.1/cfDB?directConnection=true', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -26,18 +26,18 @@ morgan = require('morgan');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
-app.use(cors ({
-    origin: (origin, callback) => {
-            if(!origin) return callback (null, true);
-            if(allowedOrigins.indexOf(origin) === -1){ //If a specific origin isn't found on the list of allowed origins
-                let message = 'The CORS policy for this application doesn\'t allow acces from origin ' + origin; 
-                    return callback(new Error(message ), false);
-        }
-        return callback(null, true);
-    }
-}));
+// app.use(cors ({
+//     origin: (origin, callback) => {
+//             if(!origin) return callback (null, true);
+//             if(allowedOrigins.indexOf(origin) === -1){ //If a specific origin isn't found on the list of allowed origins
+//                 let message = 'The CORS policy for this application doesn\'t allow acces from origin ' + origin; 
+//                     return callback(new Error(message ), false);
+//         }
+//         return callback(null, true);
+//     }
+// }));
 
 let users = [
    {
@@ -244,7 +244,7 @@ app.listen(8080, () => {
 
 // //Return a list of all movies
 // app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
-//     await movies.find()
+//     Movies.find()
 //     .then((movies) => {
 //         res.status(200).json(movies);
 //     })
@@ -255,7 +255,7 @@ app.listen(8080, () => {
 // });
 
     app.get('/movies', async (req, res) => {
-        await movies.find()
+        Movies.find()
         .then((movies) => {
             res.status(200).json(movies);
         })
@@ -278,7 +278,7 @@ app.listen(8080, () => {
     // });
 
     app.get('/movies/:title', (req, res) => {
-        movies.findOne({ title: req.params.title })
+        Movies.findOne({ title: req.params.title })
         .then((movie) => {
             res.json(movie);
         })
@@ -308,7 +308,7 @@ app.listen(8080, () => {
         .catch((err) => {
             console.error(err);
             res.status(500).send('Error: ' + err);
-        })
+        });
     });
 
 // //Return data about a director (bio, birth year, death year) by name
@@ -374,13 +374,12 @@ app.listen(8080, () => {
 //     });
 
     app.post('/users', async (req, res) => {
-        await users.findOne({ username: req.body.username })
+        await Users.findOne({ username: req.body.username })
         .then((user) => {
             if (user) {
                 return res.status(400).send(req.body.username + 'already exists');
             } else {
-                users
-                    .create({
+                Users.create({
                         username: req.body.username,
                         password: req.body.password,
                         email: req.body.email,
@@ -394,8 +393,8 @@ app.listen(8080, () => {
                 })
             }
         })
-        .catch((error) => {
-            console.error(error);
+        .catch((err) => {
+            console.error(err);
             res.status(500).send('Error: ' + err);
         });
     });
@@ -413,7 +412,7 @@ app.listen(8080, () => {
 //     });
 
     app.get('/users', async (req, res) => {
-        await users.find()
+        Users.find()
             .then((users) => {
                 res.status(201).json(users);
             })
@@ -436,8 +435,8 @@ app.listen(8080, () => {
 //     });
 
     app.get('/users/:username', async (req, res) => {
-        await users.findOne({ username: req.params.username })
-            .then ((users) => {
+        await Users.findOne({ username: req.params.username })
+            .then ((user) => {
                 res.json(user);
             })
         .catch ((err) => {
@@ -487,7 +486,7 @@ app.listen(8080, () => {
         if(req.user.username !== req.params.username){
             return res.status(400).send('User does not exist')
 }       //Condition ends
-        await users.findOneAndUpdate({ username: req.params.username }, {$set:
+        await Users.findOneAndUpdate({ username: req.params.username }, {$set:
         {
             username: req.body.username,
             password: req.body.password,
@@ -543,7 +542,7 @@ app.listen(8080, () => {
         });
     });
 
-//Delete a user by username
+//Allow users to deregister
 // app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), async (req, res) => {
 //     if(req.user.username !== req.params.username){
 //         return res.status(400).send('User does not exist');
@@ -563,10 +562,10 @@ app.listen(8080, () => {
 // });
 
     app.delete('/users/:username', (req, res) => {
-        if(req.user.username !== req.params.username){
+        if(req.user.Username !== req.params.Username){
            return res.status(400).send('User does not exist');
         }
-        users.findOneAndRemove({ username: req.params.username})
+        Users.findOneAndRemove({ username: req.params.username})
         .then((user) => {
             if (!user) {
                 res.status(400).send(req.params.username + ' was not found');
