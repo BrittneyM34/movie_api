@@ -1,4 +1,0 @@
-{"_id":{"$oid":"6571f29eee4021c4a7dd5c24"},"name":"Kim Davidson","email":"davidson19@gmail.com","birthday":"1974-06-27","favoriteMovies":[{"$oid":"6571ef65ee4021c4a7dd5c22"},{"$oid":"6571ede0ee4021c4a7dd5c20"}]}
-{"_id":{"$oid":"6571f30dee4021c4a7dd5c25"},"name":"Joe Smith","email":"smith37@gmail.com","birthday":"1985-07-02","favoriteMovies":[{"$oid":"6571ea59ee4021c4a7dd5c1b"},{"$oid":"6571ede0ee4021c4a7dd5c20"}]}
-{"_id":{"$oid":"6571f35dee4021c4a7dd5c26"},"name":"Jane Doe","email":"doe65@gmail.com","birthday":"1954-07-02","favoriteMovies":[{"$oid":"6571e846ee4021c4a7dd5c1a"},{"$oid":"6571ec3eee4021c4a7dd5c1e"}]}
-{"_id":{"$oid":"6571f3b5ee4021c4a7dd5c27"},"name":"Bob Johnson","email":"johnson43@gmail.com","birthday":"1954-06-06","favoriteMovies":[{"$oid":"6571eccdee4021c4a7dd5c1f"},{"$oid":"6571ef65ee4021c4a7dd5c22"}],"favoriteMovie":{"$oid":"6571eccdee4021c4a7dd5c1f"}}
