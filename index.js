@@ -374,16 +374,23 @@ app.listen(8080, () => {
 
     app.post('/users', 
         // [
-//         check('username', 'Username is required').isLength({min: 5}),
-//         check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-//         check('password', 'Password is required').not().isEmpty(),
-//         check('email', 'Email does not appear to be valid').isEmail()
-        // ]
+        // check('username', 'Username is required').isLength({min: 5}),
+        // check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+        // check('password', 'Password is required').not().isEmpty(),
+        // check('email', 'Email does not appear to be valid').isEmail()
+        // ],
         async (req, res) => {
+        
+        // // Check the validation object for errors
+        // let errors = validationResult(req);
+
+        // if (!errors.isEmpty()) {
+        //     return res.status(422).json({ errors: errors.array() });
+        // }
         await Users.findOne({ username: req.body.username })
         .then((user) => {
             if (user) {
-                return res.status(400).send(req.body.username + 'already exists');
+                return res.status(400).send(req.body.username + ' already exists');
             } else {
                 Users.create({
                         username: req.body.username,
