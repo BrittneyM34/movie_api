@@ -482,10 +482,11 @@ app.listen(8080, () => {
 //     });
 
     app.put('/users/:username', async (req, res) => {
-         //Condition to check added here
-        if(req.user.username !== req.params.username){
-            return res.status(400).send('User does not exist')
-}       //Condition ends
+        //  //Condition to check added here
+        // if(req.user.username !== req.params.username){
+        //     return res.status(400).send('User does not exist')
+        // }       
+        // //Condition ends
         await Users.findOneAndUpdate({ username: req.params.username }, {$set:
         {
             username: req.body.username,
@@ -524,10 +525,10 @@ app.listen(8080, () => {
 //     });
 
     app.post('/users/:username/movies/:MovieID', async (req, res) => {
-        //Condition to check added here
-        if(req.user.username !== req.params.username){
-            return res.status(400).send('User does not exist')
-        }   
+        // //Condition to check added here
+        // if(req.user.username !== req.params.username){
+        //     return res.status(400).send('User does not exist')
+        // }   
         //Condition ends
         await Users.findOneAndUpdate({ username: req.params.username}, {
             $push: { favoriteMovies: req.params.MovieID }
@@ -562,10 +563,10 @@ app.listen(8080, () => {
 // });
 
     app.delete('/users/:username', async (req, res) => {
-        if(req.user.username !== req.params.username){
-           return res.status(400).send('User does not exist');
-        }
-        await Users.findOneAndRemove({ username: req.params.username})
+        // if(req.user.username !== req.params.username){
+        //    return res.status(400).send('User does not exist');
+        // }
+        await Users.findOneAndDelete({ username: req.params.username})
         .then((user) => {
             if (!user) {
                 res.status(400).send(req.params.username + ' was not found');
