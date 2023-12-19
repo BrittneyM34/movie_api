@@ -300,10 +300,10 @@ app.listen(8080, () => {
 //         })
 //     });
 
-    app.get('/genre/:name', (req, res) => {
-        genres.findOne({ name: req.params.name })
-        .then((genre) => {
-            res.json(genre.description);
+    app.get('/movies/genre/:genreName', (req, res) => {
+        Movies.findOne({ "genre.name": req.params.genreName })
+        .then((movie) => {
+            res.json(movie);
         })
         .catch((err) => {
             console.error(err);
@@ -324,9 +324,9 @@ app.listen(8080, () => {
 //     });
 
     app.get('/director/:name', (req, res) => {
-        directors.findOne({ name: req.params.name })
-        .then((director) => {
-            res.json(director);
+        Movies.findOne({ "director.name": req.params.directorName })
+        .then((movie) => {
+            res.json(movies);
         })
         .catch((err) => {
             console.error(err);
@@ -600,7 +600,7 @@ app.listen(8080, () => {
 // });
 
     app.delete('/users/:username/movies/:MovieID', (req, res) => {
-        users.findOneAndUpdate(
+        Users.findOneAndUpdate(
             {username: req.params.username},
             {$pull: {favoriteMovies: req.params.MovieID}},
             {new:true},
