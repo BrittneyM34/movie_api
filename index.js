@@ -12,14 +12,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 
-let auth = require('./auth.js')(app);
-
-// const passport = require('passport');
-// require('./passport.js');
+// let auth = require('./auth.js')(app);
+const passport = require('passport');
+require('./passport.js');
 
 // const { check, validationResult } = require('express-validator');
 
-mongoose.connect('mongodb://127.0.0.1/cfDB?directConnection=true', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://adelin9999:xm1IxTjdodweREYv@cluster0.ixcgxaq.mongodb.net/cf_movies?retryWrites=true&w=majority");
 
 morgan = require('morgan');
 
@@ -254,8 +253,8 @@ app.listen(8080, () => {
 //     });
 // });
 
-    app.get('/movies', async (req, res) => {
-        Movies.find()
+    app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
+       Movies.find()
         .then((movies) => {
             res.status(200).json(movies);
         })
@@ -277,7 +276,7 @@ app.listen(8080, () => {
     //         });
     // });
 
-    app.get('/movies/:title', (req, res) => {
+    app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
         Movies.findOne({ title: req.params.title })
         .then((movie) => {
             res.json(movie);
@@ -300,7 +299,7 @@ app.listen(8080, () => {
 //         })
 //     });
 
-    app.get('/movies/genre/:genreName', (req, res) => {
+    app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false }), (req, res) => {
         Movies.findOne({ "genre.name": req.params.genreName })
         .then((movie) => {
             res.json(movie);
@@ -323,7 +322,7 @@ app.listen(8080, () => {
 //         });
 //     });
 
-    app.get('/director/:name', (req, res) => {
+    app.get('/director/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
         Movies.findOne({ "director.name": req.params.directorName })
         .then((movie) => {
             res.json(movies);
@@ -373,7 +372,14 @@ app.listen(8080, () => {
 //         });
 //     });
 
-    app.post('/users', async (req, res) => {
+    app.post('/users', 
+        // [
+//         check('username', 'Username is required').isLength({min: 5}),
+//         check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+//         check('password', 'Password is required').not().isEmpty(),
+//         check('email', 'Email does not appear to be valid').isEmail()
+        // ]
+        async (req, res) => {
         await Users.findOne({ username: req.body.username })
         .then((user) => {
             if (user) {
@@ -411,7 +417,7 @@ app.listen(8080, () => {
 //             });
 //     });
 
-    app.get('/users', async (req, res) => {
+    app.get('/users', passport.authenticate('jwt', { session: false }), async (req, res) => {
         Users.find()
             .then((users) => {
                 res.status(201).json(users);
@@ -434,7 +440,7 @@ app.listen(8080, () => {
 //             });
 //     });
 
-    app.get('/users/:username', async (req, res) => {
+    app.get('/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
         await Users.findOne({ username: req.params.username })
             .then ((user) => {
                 res.json(user);
@@ -481,12 +487,10 @@ app.listen(8080, () => {
 //         })
 //     });
 
-    app.put('/users/:username', async (req, res) => {
-        //  //Condition to check added here
-        // if(req.user.username !== req.params.username){
-        //     return res.status(400).send('User does not exist')
-        // }       
-        // //Condition ends
+    app.put('/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+        if(req.user.username !== req.params.username){
+            return res.status(400).send('Permission denied')
+        }   
         await Users.findOneAndUpdate({ username: req.params.username }, {$set:
         {
             username: req.body.username,
@@ -524,12 +528,10 @@ app.listen(8080, () => {
 //         });
 //     });
 
-    app.post('/users/:username/movies/:MovieID', async (req, res) => {
-        // //Condition to check added here
-        // if(req.user.username !== req.params.username){
-        //     return res.status(400).send('User does not exist')
-        // }   
-        //Condition ends
+    app.post('/users/:username/movies/:MovieID', passport.authenticate('jwt', { session: false }),  async (req, res) => {
+        if(req.user.username !== req.params.username){
+            return res.status(400).send('Permission denied')
+        }   
         await Users.findOneAndUpdate({ username: req.params.username}, {
             $push: { favoriteMovies: req.params.MovieID }
         },
@@ -562,10 +564,10 @@ app.listen(8080, () => {
 //     });
 // });
 
-    app.delete('/users/:username', async (req, res) => {
-        // if(req.user.username !== req.params.username){
-        //    return res.status(400).send('User does not exist');
-        // }
+    app.delete('/users/:username', passport.authenticate('jwt', { session: false }), async (req, res) => {
+        if(req.user.username !== req.params.username){
+           return res.status(400).send('Permission denied');
+        }
         await Users.findOneAndDelete({ username: req.params.username})
         .then((user) => {
             if (!user) {
@@ -599,8 +601,11 @@ app.listen(8080, () => {
 //     });
 // });
 
-    app.delete('/users/:username/movies/:MovieID', (req, res) => {
-        Users.findOneAndUpdate(
+    app.delete('/users/:username/movies/:MovieID', passport.authenticate('jwt', { session: false }), async (req, res) => {
+        if(req.user.username !== req.params.username){
+            return res.status(400).send('Permission denied');
+        }
+        await Users.findOneAndUpdate(
             {username: req.params.username},
             {$pull: {favoriteMovies: req.params.MovieID}},
             {new:true},
