@@ -346,7 +346,7 @@ app.listen(8080, () => {
                         username: req.body.username,
                         password: req.body.password,
                         email: req.body.email,
-                        birthday: req.body.nirthday
+                        birthday: req.body.birthday
                     })
                     .then((user) => {
                         res.status(201).json(user) })
