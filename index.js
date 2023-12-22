@@ -315,8 +315,9 @@ app.listen(8080, () => {
 //                         email: req.body.email,
 //                         birthday: req.body.birthday
 //                     })
-//                     .then((user) => {res.status(201).json(user) })
-//                 .cacth((error) => {
+//                     .then((user) => {
+                    // res.status(201).json(user) })
+//                 .catch((error) => {
 //                     console.error(error);
 //                     res.status(500).send('Error: ' + error);
 //                 })
@@ -352,7 +353,7 @@ app.listen(8080, () => {
                         res.status(201).json(user) })
                 .catch((error) => {
                     console.error(error);
-                    res.status(500).send('Error: ' + error);
+                    res.status(500).send('Error: ' + err);
                 })
             }
         })

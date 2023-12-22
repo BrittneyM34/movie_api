@@ -19,7 +19,7 @@ module.exports = (router) => {
         passport.authenticate('local', { session: false }, (error, user, info) => {
             if (error || !user) {
                 return res.status(400).json({
-                    message: 'Login failed',
+                    message: 'Username does not exist',
                     user:user
                 });
             }
@@ -28,7 +28,7 @@ module.exports = (router) => {
                     res.send(error);
                 }
                 let token = generateJWTToken(user.toJSON());
-                return res.json({ user, token});
+                return res.json({ user, token})
             });
         })(req, res);
     });
