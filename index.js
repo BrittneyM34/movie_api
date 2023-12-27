@@ -4,6 +4,7 @@ const express = require("express");
     mongoose = require('mongoose');
     Models = require('./models.js');
     cors = require('cors');
+    morgan = require('morgan');
 
 var bodyParser = require('body-parser');
 const app = express();
@@ -11,16 +12,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
+// log all incoming requests
+app.use(morgan("common"));
 
 let auth = require('./auth.js')(app);
 const passport = require('passport');
-require('./passport.js');
+require('./passport');
 
 // const { check, validationResult } = require('express-validator');
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb+srv://adelin9999:xm1IxTjdodweREYv@cluster0.ixcgxaq.mongodb.net/cf_movies?retryWrites=true&w=majority");
-
-morgan = require('morgan');
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -243,7 +244,7 @@ app.listen(8080, () => {
 
 // //Return a list of all movies
     app.get('/movies', passport.authenticate('jwt', { session: false }), async (req, res) => {
-       Movies.find()
+       await Movies.find()
         .then((movies) => {
             res.status(200).json(movies);
         })
@@ -329,8 +330,7 @@ app.listen(8080, () => {
 //         });
 //     });
 
-    app.post('/users', 
-        async (req, res) => {
+    app.post('/users', async (req, res) => {
         
         // // Check the validation object for errors
         // let errors = validationResult(req);
