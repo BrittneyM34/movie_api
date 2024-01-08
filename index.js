@@ -281,7 +281,7 @@ app.listen(8080, () => {
     });
 
 //Return data about a director (bio, birth year) by name
-    app.get('/director/:name', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    app.get('/director/:directorName', passport.authenticate('jwt', { session: false }), async (req, res) => {
         await Movies.findOne({ "director.name": req.params.directorName })
         .then((movie) => {
             res.status(200).json(movie);
