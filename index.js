@@ -26,7 +26,7 @@ mongoose.connect('mongodb://127.0.0.1/cfDB?directConnection=true', { useNewUrlPa
 const Movies = Models.Movie;
 const Users = Models.User;
 
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+let allowedOrigins = ['http://localhost:8080", "http://testsite.com", "http://localhost:1234'];
 
 app.use(cors ({
     origin: (origin, callback) => {
@@ -270,7 +270,7 @@ app.listen(8080, () => {
     app.get('/movies/genre/:genreName', passport.authenticate('jwt', { session: false }), async (req, res) => {
         await Movies.findOne({ "genre.name": req.params.genreName })
         .then((movie) => {
-            res.status(200).json(movie);
+            res.status(200).json(movie.genre);
         })
         .catch((err) => {
             console.error(err);
@@ -282,7 +282,7 @@ app.listen(8080, () => {
     app.get('/director/:directorName', passport.authenticate('jwt', { session: false }), async (req, res) => {
         await Movies.findOne({ "director.name": req.params.directorName })
         .then((movie) => {
-            res.status(200).json(movie);
+            res.status(200).json(movie.director);
         })
         .catch((err) => {
             console.error(err);
