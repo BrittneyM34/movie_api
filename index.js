@@ -1,7 +1,7 @@
 const express = require('express');
     http = require('http');
     uuid = require('uuid');
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'); 
     Models = require('./models.js');
     cors = require('cors');
     morgan = require('morgan');
@@ -238,8 +238,9 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something Broke!');
 });
 
-app.listen(8080, () => {
-    console.log('The movie app has loaded and is listening on port 8080');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+    console.log('Listening on Port ' + port);
 });
 
 //Return a list of all movies
