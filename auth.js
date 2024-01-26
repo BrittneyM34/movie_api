@@ -1,7 +1,7 @@
 const jwtSecret = 'your_jwt_secret'; //This has to be the same key used in the JWTStrategy
-
-const jwt = require('jsonwebtoken'),
+    jwt = require('jsonwebtoken'),
     passport = require ('passport');
+    bcrypt = require('bcrypt');
 
 require('./passport'); //Your local passport file
 
@@ -33,4 +33,3 @@ module.exports = (router) => {
         })(req, res);
     });
 }
-
