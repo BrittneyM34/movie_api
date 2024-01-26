@@ -21,7 +21,9 @@ require('./passport');
 
 const { check, validationResult } = require('express-validator');
 
-mongoose.connect('mongodb://127.0.0.1/cfDB?directConnection=true', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect('mongodb://127.0.0.1/cfDB?directConnection=true', { useNewUrlParser: true, useUnifiedTopology: true });
+
+mongoose.connect(' process.env.CONNECTION_URI', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const Movies = Models.Movie;
 const Users = Models.User;
