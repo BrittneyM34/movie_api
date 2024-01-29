@@ -1,10 +1,10 @@
 const express = require('express');
-http = require('http');
-uuid = require('uuid');
-mongoose = require('mongoose');
-Models = require('./models.js');
-cors = require('cors');
-morgan = require('morgan');
+    http = require('http');
+    uuid = require('uuid');
+    mongoose = require('mongoose');
+    Models = require('./models.js');
+    cors = require('cors');
+    morgan = require('morgan');
 
 var bodyParser = require('body-parser');
 const app = express();
@@ -24,6 +24,12 @@ const { check, validationResult } = require('express-validator');
 // Mongo DB connection via Mongoose
 
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+});
 
 const Movies = Models.Movie;
 const Users = Models.User;
