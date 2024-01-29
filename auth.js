@@ -1,7 +1,7 @@
 const jwtSecret = 'your_jwt_secret'; //This has to be the same key used in the JWTStrategy
     jwt = require('jsonwebtoken'),
     passport = require ('passport');
-    bcrypt = require('bcrypt');
+    bcrypt = require('bcrypt')
 
 require('./passport'); //Your local passport file
 
@@ -19,7 +19,7 @@ module.exports = (router) => {
         passport.authenticate('local', { session: false }, (error, user, info) => {
             if (error || !user) {
                 return res.status(400).json({
-                    message: 'Username does not exist',
+                    message: 'error',
                     user:user
                 });
             }
