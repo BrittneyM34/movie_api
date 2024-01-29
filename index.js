@@ -28,7 +28,7 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
 const Movies = Models.Movie;
 const Users = Models.User;
 
-let allowedOrigins = ['http://localhost:8080", "http://testsite.com", "http://localhost:1234'];
+let allowedOrigins = ['http://localhost:8080", "http://testsite.com", "http://localhost:1234', 'https://my-movies-8ed51d856f3e.herokuapp.com/'];
 
 app.use(cors({
     origin: (origin, callback) => {
