@@ -18,11 +18,11 @@ module.exports = (router) => {
     router.post('/login', async (req, res) => {
         // debug
         console.log('Received login request:', req.body);
-        
+
         passport.authenticate('local', { session: false }, (error, user, info) => { 
             if (error || !user) {
                 return res.status(400).json({
-                    message: 'Login failed',
+                    message: 'Login failed dude',
                     user:user
                 });
             }
