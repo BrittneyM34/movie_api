@@ -21,6 +21,7 @@ module.exports = (router) => {
 
         passport.authenticate('local', { session: false }, (error, user, info) => { 
             if (error || !user) {
+                console.log('YOU ARE HERE');
                 return res.status(400).json({
                     message: 'Login failed dude',
                     user:user
