@@ -23,7 +23,7 @@ module.exports = (router) => {
             if (error || !user) {
                 console.log('YOU ARE HERE');
                 return res.status(400).json({
-                    message: 'Login failed dude',
+                    message: 'Login failed',
                     user:user
                 });
             }
