@@ -23,8 +23,12 @@ const { check, validationResult } = require('express-validator');
 
 // Mongo DB connection via Mongoose
 
-// mongoose.connect(process.env.CONNECTION_URI);
+mongoose.connect(process.env.CONNECTION_URI);
 
+// Local Connection
+
+// mongoose.connect('mongodb://127.0.0.1/cfDB?directConnection=true', { useNewUrlParser: true, useUnifiedTopology: true });
+  
 const Movies = Models.Movie;
 const Users = Models.User;
 
