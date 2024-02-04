@@ -23,7 +23,7 @@ const { check, validationResult } = require('express-validator');
 
 // Mongo DB connection via Mongoose
 
-mongoose.connect(process.env.CONNECTION_URI);
+// mongoose.connect(process.env.CONNECTION_URI);
 
 const Movies = Models.Movie;
 const Users = Models.User;
