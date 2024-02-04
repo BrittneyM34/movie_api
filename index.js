@@ -23,7 +23,9 @@ const { check, validationResult } = require('express-validator');
 
 // Mongo DB connection via Mongoose
 
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI
+    // , { useNewUrlParser: true, useUnifiedTopology: true }
+    );
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -50,7 +52,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something Broke!');
 });
 
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
     console.log('Listening on Port ' + port);
 });
