@@ -1,4 +1,4 @@
-const jwtSecret = 'your_jwt_secret'; //This has to be the same key used in the JWTStrategy
+const jwtSecret = process.env.JWT_SECRET || 'your_jwt_secret'; //This has to be the same key used in the JWTStrategy
     jwt = require('jsonwebtoken'),
     passport = require ('passport');
     bcrypt = require('bcrypt')
@@ -21,7 +21,6 @@ module.exports = (router) => {
 
         passport.authenticate('local', { session: false }, (error, user, info) => { 
             if (error || !user) {
-                console.log('YOU ARE HERE');
                 return res.status(400).json({
                     message: 'Login failed',
                     user:user
