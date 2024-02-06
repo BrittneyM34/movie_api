@@ -1,10 +1,10 @@
 const express = require('express');
-    http = require('http');
-    uuid = require('uuid');
-    mongoose = require('mongoose');
-    Models = require('./models.js');
-    cors = require('cors');
-    morgan = require('morgan');
+http = require('http');
+uuid = require('uuid');
+mongoose = require('mongoose');
+Models = require('./models.js');
+cors = require('cors');
+morgan = require('morgan');
 
 var bodyParser = require('body-parser');
 const app = express();
@@ -28,22 +28,24 @@ mongoose.connect(process.env.CONNECTION_URI);
 // Local Connection
 
 // mongoose.connect('mongodb://127.0.0.1/cfDB?directConnection=true', { useNewUrlParser: true, useUnifiedTopology: true });
-  
+
 const Movies = Models.Movie;
 const Users = Models.User;
 
 let allowedOrigins = ['http://localhost:8080", "http://testsite.com", "http://localhost:1234', 'https://my-movies-8ed51d856f3e.herokuapp.com/'];
 
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) { //If a specific origin isn't found on the list of allowed origins
-            let message = 'The CORS policy for this application doesn\'t allow acces from origin ' + origin;
-            return callback(new Error(message), false);
-        }
-        return callback(null, true);
-    }
-}));
+// app.use(cors({
+//     origin: (origin, callback) => {
+//         if (!origin) return callback(null, true);
+//         if (allowedOrigins.indexOf(origin) === -1) { //If a specific origin isn't found on the list of allowed origins
+//             let message = 'The CORS policy for this application doesn\'t allow acces from origin ' + origin;
+//             return callback(new Error(message), false);
+//         }
+//         return callback(null, true);
+//     }
+// }));
+
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send('Welcome to my Movie Flix')
