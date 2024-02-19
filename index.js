@@ -1,10 +1,10 @@
 const express = require('express');
-http = require('http');
-uuid = require('uuid');
-mongoose = require('mongoose');
-Models = require('./models.js');
-cors = require('cors');
-morgan = require('morgan');
+const http = require('http');
+const uuid = require('uuid');
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+const cors = require('cors');
+const morgan = require('morgan');
 
 var bodyParser = require('body-parser');
 const app = express();
