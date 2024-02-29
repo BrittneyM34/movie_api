@@ -13,7 +13,8 @@ const app = express();
 
 
 app.use(cors({
-    credentials:true
+    credentials:true,
+    allowedOrigins:['Content-Type','Authorization']
 }));
 
 
