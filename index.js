@@ -21,6 +21,8 @@ require('./passport');
 
 const { check, validationResult } = require('express-validator');
 
+app.use(cors());
+
 // Mongo DB connection via Mongoose
 
 mongoose.connect(process.env.CONNECTION_URI);
@@ -45,7 +47,6 @@ let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://lo
 //     }
 // }));
 
-app.use(cors());
 
 app.get('/', (req, res) => {
     res.send('Welcome to my Movie Flix')
