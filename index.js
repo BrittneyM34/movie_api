@@ -9,14 +9,10 @@ const morgan = require('morgan');
 var bodyParser = require('body-parser');
 const app = express();
 
-
-
-
 app.use(cors({
     credentials:true,
     allowedOrigins:['Content-Type','Authorization']
 }));
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -30,8 +26,6 @@ const passport = require('passport');
 require('./passport');
 
 const { check, validationResult } = require('express-validator');
-
-
 
 // Mongo DB connection via Mongoose
 
@@ -56,7 +50,6 @@ let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://lo
 //         return callback(null, true);
 //     }
 // }));
-
 
 app.get('/', (req, res) => {
     res.send('Welcome to my Movie Flix')
@@ -201,6 +194,7 @@ app.put('/users/:username', passport.authenticate('jwt', { session: false }),
         let errors = validationResult(req);
 
         if (!errors.isEmpty()) {
+            console.log(errors)
             return res.status(422).json({ errors: errors.array() });
         }
         if (req.user.username !== req.params.username) {
