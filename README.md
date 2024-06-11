@@ -6,7 +6,7 @@ movies-api is the server-side component of a "movies" web application. This API 
 
 ## Key Features
 
-The app allows users to receive infomration on movies,, directors, genres, and to save their favorite movies.
+The app allows users to receive information on movies, directors, genres, and to save their favorite movies.
 
 ## Technologies Used
 - JSON
